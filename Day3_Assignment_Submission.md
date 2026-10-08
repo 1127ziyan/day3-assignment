@@ -7,10 +7,10 @@ Each numbered step contains an explanation followed by runnable Python code. Rec
 
 **Submission links**
 - GitHub repository: [1127ziyan/day3-assignment](https://github.com/1127ziyan/day3-assignment).
-- Remote MLflow model page: pending hosting and verification.
+- Remote MLflow model page: [bike_demand_forecast — Version 1](https://day3-assignment-mlflow.onrender.com/#/models/bike_demand_forecast/versions/1).
 - Original local registered model URI: `models:/bike_demand_forecast/1`.
 
-A model URI identifies an object inside MLflow; it is not a browser URL. The remote model page will be added after deployment and an external-access check.
+A model URI identifies an object inside MLflow; it is not a browser URL. The HTTPS model-version page above is publicly accessible for instructor review. The hosted copy preserves the original fitted Ridge pipeline and has its own run identity.
 
 **Sources**
 - Course assignment: DSD_Day3_Learner.pdf, PDF pages 19–21.
@@ -30,8 +30,6 @@ The recorded experiment used Python 3.14.6. The pinned core package versions bel
 
 ```python
 import io
-import os
-import os
 import os
 import json
 import sqlite3
@@ -68,6 +66,8 @@ MLflow stores experiment parameters, metrics, run metadata, data snapshots, and 
 To upload new experiments to a hosted server, set `MLFLOW_TRACKING_URI` to its HTTPS tracking endpoint before starting the notebook kernel. Supply credentials through environment variables, never notebook source. For remote experiments, the server selects the artifact location; a local file path would be inaccessible to the teacher.
 
 The optional local UI below is useful for inspection. A `127.0.0.1` address is accessible only on the computer running it and cannot serve as the submission's remote model link.
+
+The submitted Render service is a public, read-only snapshot for instructor inspection and model retrieval. Keep the default local mode when rerunning this notebook. Use a separately authenticated writable server if you want to log new experiments remotely.
 
 ```python
 PROJECT_DIR = Path.cwd()
@@ -607,13 +607,20 @@ else:
     print("Update NOTEBOOK_PATH to the saved notebook location.")
 ```
 
-## 13. Record the remote MLflow model URL
+## 13. Access the hosted MLflow model
 
-After uploading and registering the model remotely, copy the model-version page URL from the hosted MLflow UI. Open it from a separate browser session to confirm the teacher can access it. Save the verified URL in `submission_links.json` and include it in the submission-links block at the top of this notebook.
+The original selected Ridge pipeline is registered as **bike_demand_forecast, Version 1** on the hosted MLflow server.
 
-The tracking endpoint is used by Python to upload records. The model page URL is used by the teacher to inspect the specific registered version. The registry URI (`models:/...`) is used to load a model. These addresses serve different purposes.
+- [Open the registered model version](https://day3-assignment-mlflow.onrender.com/#/models/bike_demand_forecast/versions/1).
+- Tracking endpoint: `https://day3-assignment-mlflow.onrender.com`.
+- Model loading URI: `models:/bike_demand_forecast/1`.
+- Original local source run: `d6fc343b23934fba8bfb053c5413f4e8`.
 
-Remote hosting is still pending. The code below reports the current status without inventing a URL.
+The browser URL opens a specific model version. The tracking endpoint connects Python to the server. The model URI selects the model within that server. The hosted run has a new ID and a provenance tag linking it to the original local run; the fitted model is copied without retraining.
+
+The public model-version page was checked on 8 October 2026. The hosted service permits reading and model downloads; rerunning the training cells uses the local store by default. Render's Free service may take approximately one minute to wake after inactivity. A manual rebuild recreates hosted run IDs, so recheck provenance after rebuilding.
+
+The following cell reads the submitted link from `submission_links.json`.
 
 ```python
 links_path = PROJECT_DIR / "submission_links.json"

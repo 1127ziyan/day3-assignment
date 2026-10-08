@@ -74,7 +74,9 @@ def seed_store(project_dir, storage_dir):
     with sqlite3.connect(storage_dir / 'mlflow.db') as connection:
         for table, field in [('experiments', 'artifact_location'),
                              ('runs', 'artifact_uri'),
-                             ('logged_models', 'artifact_location')]:
+                             ('logged_models', 'artifact_location'),
+                             ('model_versions', 'source'),
+                             ('model_versions', 'storage_location')]:
             connection.execute(
                 f'UPDATE {table} SET {field} = REPLACE({field}, ?, ?) '
                 f'WHERE {field} LIKE ?',

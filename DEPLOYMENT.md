@@ -14,7 +14,7 @@ A reverse proxy permits public reading and the explicit MLflow search requests u
 4. Open the public service URL, navigate to Models, open `bike_demand_forecast`, and select the hosted version.
 5. Verify access in a separate browser session. Copy the actual model-version page URL into `submission_links.json` and the notebook's submission-links block.
 
-No remote model URL has been verified yet. Do not submit a guessed service address or the local `127.0.0.1` address as a deployment link.
+The service is deployed at [https://day3-assignment-mlflow.onrender.com](https://day3-assignment-mlflow.onrender.com). The public [bike_demand_forecast, Version 1 model page](https://day3-assignment-mlflow.onrender.com/#/models/bike_demand_forecast/versions/1) was verified on 8 October 2026. Automatic deployment is disabled; changes to notebook documentation do not rebuild the model snapshot.
 
 Render Free services sleep after inactivity and use ephemeral writable filesystems. The model registry snapshot is baked into the image and restored with each new deployment; browser writes are blocked. A rebuild creates new hosted run identities, so recheck the submitted link after a rebuild. See [Render's current free-service limitations](https://render.com/docs/free).
 

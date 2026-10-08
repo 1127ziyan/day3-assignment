@@ -23,9 +23,9 @@ Ridge was selected using validation MAE. Its test MAE was 1168.61, compared with
 
 ## MLflow and submission links
 
-`submission_links.json` records the verified repository and remote model webpage URLs. The public repository is [1127ziyan/day3-assignment](https://github.com/1127ziyan/day3-assignment). Remote hosting is pending; no public model URL has been verified yet. Local `127.0.0.1` links are not accessible to the teacher.
+`submission_links.json` records the verified repository and remote model webpage URLs. The public repository is [1127ziyan/day3-assignment](https://github.com/1127ziyan/day3-assignment). The published model is [bike_demand_forecast, Version 1](https://day3-assignment-mlflow.onrender.com/#/models/bike_demand_forecast/versions/1). The HTTPS page is publicly accessible to the instructor.
 
-For remote tracking, set `MLFLOW_TRACKING_URI` to the HTTPS endpoint before starting the kernel. Provide credentials only through the provider's authentication mechanism or environment variables. The notebook leaves artifact-store configuration to the remote server.
+The submitted Render service is a public, read-only model snapshot. Keep the default local mode when rerunning this notebook. To log new experiments on a separate authenticated writable server, set `MLFLOW_TRACKING_URI` to that server's HTTPS endpoint before starting the kernel. Provide credentials only through the provider's authentication mechanism or environment variables. The notebook leaves artifact-store configuration to the remote server.
 
 Model registration and upload enable inspection and retrieval. They do not themselves create a live prediction API.
 
@@ -33,4 +33,4 @@ Model registration and upload enable inspection and retrieval. They do not thems
 
 Daily data are from the [UCI Bike Sharing dataset](https://archive.ics.uci.edu/dataset/275/bike+sharing+dataset). The dataset is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); the notebook downloads the official archive when needed.
 
-`model_export.zip` contains the original selected Ridge model and recorded evaluation snapshots. Extract the archive into a `model_export` folder to load it locally. It is a portable local export, not evidence of a remote upload. The original source run ID is `d6fc343b23934fba8bfb053c5413f4e8`. The original local registered name and version are `bike_demand_forecast`, version 1.
+`model_export.zip` contains the original selected Ridge model and recorded evaluation snapshots. Extract the archive into a `model_export` folder to load it locally. The same fitted pipeline is registered on the public MLflow server without retraining. The original source run ID is `d6fc343b23934fba8bfb053c5413f4e8`. The original local registered name and version are `bike_demand_forecast`, version 1.
