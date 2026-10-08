@@ -1,0 +1,22 @@
+{
+  "tracking_endpoint": "https://day3-assignment-mlflow.onrender.com",
+  "model_name": "bike_demand_forecast",
+  "version": "1",
+  "remote_run_id": "a59f74830c6d4edcbcca24f1bda1ba5d",
+  "source_local_run_id": "d6fc343b23934fba8bfb053c5413f4e8",
+  "remote_metrics": {
+    "val_mae": 834.2209700092224,
+    "val_rmse": 1014.614491797139,
+    "test_mae": 1168.6057525262063,
+    "test_rmse": 1537.3929992430817,
+    "baseline_val_mae": 900.8913043478261,
+    "baseline_val_rmse": 1163.547891430419,
+    "baseline_test_mae": 1297.0108695652175,
+    "baseline_test_rmse": 1821.984086338178
+  },
+  "remote_model_download_verified": true,
+  "predictions_match_original": true,
+  "mlflow_model_page_url": "https://day3-assignment-mlflow.onrender.com/#/models/bike_demand_forecast/versions/1",
+  "verification_date": "2026-10-08",
+  "test_rows_checked": 92
+}

@@ -3,6 +3,7 @@
   "mlflow_tracking_endpoint": "https://day3-assignment-mlflow.onrender.com",
   "mlflow_model_page_url": "https://day3-assignment-mlflow.onrender.com/#/models/bike_demand_forecast/versions/1",
   "remote_upload_verified": true,
-  "remote_model_download_verified": false,
-  "original_local_run_id": "d6fc343b23934fba8bfb053c5413f4e8"
+  "remote_model_download_verified": true,
+  "original_local_run_id": "d6fc343b23934fba8bfb053c5413f4e8",
+  "remote_run_id": "a59f74830c6d4edcbcca24f1bda1ba5d"
 }

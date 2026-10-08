@@ -34,3 +34,5 @@ Model registration and upload enable inspection and retrieval. They do not thems
 Daily data are from the [UCI Bike Sharing dataset](https://archive.ics.uci.edu/dataset/275/bike+sharing+dataset). The dataset is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); the notebook downloads the official archive when needed.
 
 `model_export.zip` contains the original selected Ridge model and recorded evaluation snapshots. Extract the archive into a `model_export` folder to load it locally. The same fitted pipeline is registered on the public MLflow server without retraining. The original source run ID is `d6fc343b23934fba8bfb053c5413f4e8`. The original local registered name and version are `bike_demand_forecast`, version 1.
+
+The public model was loaded through an independent HTTPS client without a login. Its predictions matched the original saved predictions on all 92 test rows (`rtol=1e-10`). See `remote_model_verification.json` for verification results and hosted provenance. The service uses Render's Free plan; initial access after inactivity may take approximately one minute.

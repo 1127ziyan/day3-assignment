@@ -180,11 +180,11 @@ assert df["dteday"].diff().dropna().eq(pd.Timedelta(days=1)).all()
 
 ## 5. Create historical features and the benchmark
 
-This experiment interprets the assignment's wording, “use yesterday's rentals to forecast tomorrow,” relative to a decision day. If the target day is \(t\), the decision day is \(t-1\), so the benchmark uses \(t-2\):
+This experiment interprets the assignment's wording, “use yesterday's rentals to forecast tomorrow,” relative to a decision day. If the target day is $t$, the decision day is $t-1$, so the benchmark uses $t-2$:
 
-\[
+$$
 \hat y_t^{baseline} = y_{t-2}.
-\]
+$$
 
 This is the baseline convention used throughout the recorded experiment. A one-day persistence forecast would be a different benchmark and should not be mixed with these results.
 
@@ -194,9 +194,9 @@ Create two lag features and a seven-day historical average:
 - `rentals_lag7`: the rental count one week before the target date.
 - `rentals_mean7`: the average count from target day minus eight through target day minus two.
 
-\[
+$$
 mean7_t = \frac{1}{7}\sum_{k=2}^{8} y_{t-k}.
-\]
+$$
 
 Apply `shift(2)` before `rolling(7)` so the average ends at the latest day permitted by this experiment's convention. The first eight rows have insufficient history and will be excluded from modelling.
 
@@ -270,11 +270,11 @@ display(split_summary)
 
 Use validation **MAE as the primary model-selection metric** and report RMSE as a supplementary metric. Both measure error in daily rental counts; smaller values are better.
 
-\[
+$$
 MAE = \frac{1}{n}\sum_i |y_i-\hat y_i|,
 \qquad
 RMSE = \sqrt{\frac{1}{n}\sum_i (y_i-\hat y_i)^2}.
-\]
+$$
 
 MAE answers: “How many rentals is the forecast wrong by on an average day?” It provides a direct interpretation without assuming a disproportionate cost for extreme errors. RMSE gives greater weight to large errors and provides a complementary view of reliability. If a future operating policy assigns especially high costs to large shortages, the selection metric should be reconsidered before model selection.
 
@@ -622,16 +622,15 @@ The public model-version page was checked on 8 October 2026. The hosted service 
 
 The following cell reads the submitted link from `submission_links.json`.
 
+**External verification:** An independent HTTPS client retrieved registered Version 1 without a login and compared its predictions on all 92 test rows with the original saved predictions. They matched within numerical tolerance (`rtol=1e-10`). Verified test MAE: **1168.61**; test RMSE: **1537.39**. Details and the hosted run ID are recorded in `remote_model_verification.json`.
+
 ```python
+from IPython.display import Markdown
+
+# The default link also works when opening this notebook as a standalone file.
+default_model_page_url = "https://day3-assignment-mlflow.onrender.com/#/models/bike_demand_forecast/versions/1"
 links_path = PROJECT_DIR / "submission_links.json"
-if links_path.exists():
-    submission_links = json.loads(links_path.read_text())
-    model_page_url = submission_links.get("mlflow_model_page_url")
-    if model_page_url:
-        from IPython.display import Markdown
-        display(Markdown(f"[Registered MLflow model]({model_page_url})"))
-    else:
-        print("Remote MLflow model page: pending deployment and verification.")
-else:
-    print("Submission links file has not been configured.")
+submission_links = json.loads(links_path.read_text()) if links_path.exists() else {}
+model_page_url = submission_links.get("mlflow_model_page_url") or default_model_page_url
+display(Markdown(f"[Registered MLflow model]({model_page_url})"))
 ```
