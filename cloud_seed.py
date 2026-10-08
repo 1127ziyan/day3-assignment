@@ -2,6 +2,7 @@
 import json
 import os
 import shutil
+import sqlite3
 import zipfile
 from pathlib import Path
 
@@ -67,6 +68,20 @@ def seed_store(project_dir, storage_dir):
               'source_local_run_id':'d6fc343b23934fba8bfb053c5413f4e8',
               'test_mae':test_mae,'test_rmse':test_rmse}
     (storage_dir / 'cloud_model_identity.json').write_text(json.dumps(result,indent=2))
+    # Convert this completed snapshot to server-proxied artifact addresses.
+    # All runs are finished, and the build process exits before the public server starts.
+    file_root = artifacts.resolve().as_uri()
+    with sqlite3.connect(storage_dir / 'mlflow.db') as connection:
+        for table, field in [('experiments', 'artifact_location'),
+                             ('runs', 'artifact_uri'),
+                             ('logged_models', 'artifact_location')]:
+            connection.execute(
+                f'UPDATE {table} SET {field} = REPLACE({field}, ?, ?) '
+                f'WHERE {field} LIKE ?',
+                (file_root, 'mlflow-artifacts:', file_root + '%'),
+            )
+    for descriptor in artifacts.rglob('MLmodel'):
+        descriptor.write_text(descriptor.read_text().replace(file_root, 'mlflow-artifacts:'))
     shutil.rmtree(export)
     print(json.dumps(result,indent=2))
     return result

@@ -29,13 +29,24 @@ http {
 }
 '''.replace('PORT_NUMBER',str(port))
 Path('/tmp/day3-nginx.conf').write_text(config)
+# A single preloaded Flask worker avoids background-job processes and duplicate imports.
+server_env = os.environ.copy()
+server_env.update({
+    "_MLFLOW_SERVER_FILE_STORE": "sqlite:////app/seed/mlflow.db",
+    "_MLFLOW_SERVER_SERVE_ARTIFACTS": "true",
+    "_MLFLOW_SERVER_ARTIFACT_DESTINATION": "/app/seed/artifacts",
+    "MLFLOW_SERVER_ALLOWED_HOSTS": f"{public_host},localhost,127.0.0.1",
+    "MLFLOW_SERVER_CORS_ALLOWED_ORIGINS": f"https://{public_host}",
+    "MLFLOW_SERVER_ENABLE_JOB_EXECUTION": "false",
+    "MLFLOW_SERVER_JOB_ENABLE_PERIODIC_TASKS": "false",
+    "MLFLOW_DISABLE_AGENT_HINT": "1",
+})
 mlflow_process = subprocess.Popen([
-    sys.executable,'-m','mlflow','server',
-    '--backend-store-uri','sqlite:////app/seed/mlflow.db',
-    '--host','127.0.0.1','--port','5000','--workers','1',
-    '--allowed-hosts',f'{public_host},localhost,127.0.0.1',
-    '--cors-allowed-origins',f'https://{public_host}',
-])
+    sys.executable, "-m", "gunicorn", "--workers", "1", "--threads", "2",
+    "--preload", "--timeout", "120", "--bind", "127.0.0.1:5000",
+    "mlflow.server:app",
+], env=server_env)
+
 try:
     subprocess.run(['nginx','-c','/tmp/day3-nginx.conf','-g','daemon off;'],check=True)
 finally:
