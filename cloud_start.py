@@ -12,7 +12,7 @@ http {
   error_log /dev/stderr;
   server {
     listen PORT_NUMBER;
-    location = /healthz { return 200 "ready\\n"; }
+    location = /healthz { proxy_pass http://127.0.0.1:5000/health; }
     location ~ ^/api/2\\.0/mlflow/(experiments|runs|registered-models|model-versions|logged-models)/search$ {
       limit_except GET POST { deny all; }
       proxy_pass http://127.0.0.1:5000;
@@ -34,6 +34,7 @@ mlflow_process = subprocess.Popen([
     '--backend-store-uri','sqlite:////app/seed/mlflow.db',
     '--host','127.0.0.1','--port','5000','--workers','1',
     '--allowed-hosts',f'{public_host},localhost,127.0.0.1',
+    '--cors-allowed-origins',f'https://{public_host}',
 ])
 try:
     subprocess.run(['nginx','-c','/tmp/day3-nginx.conf','-g','daemon off;'],check=True)
