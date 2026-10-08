@@ -1,0 +1,7 @@
+mlflow==3.17.0
+scikit-learn==1.9.0
+pandas==3.0.3
+numpy==2.4.6
+skops==0.16.0
+ipykernel
+nbformat

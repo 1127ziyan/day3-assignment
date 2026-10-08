@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: day3-assignment-mlflow
+    runtime: docker
+    plan: free
+    healthCheckPath: /healthz
